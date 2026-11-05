@@ -27,9 +27,23 @@
   .cat-btn { flex-shrink: 0; border: 1.5px solid var(--bg2); border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; background: var(--bg2); color: var(--hint); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .cat-btn.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
+  /* Filters & comparison */
+  .tools { display: flex; gap: 8px; padding-bottom: 10px; }
+  .tool-btn { flex: 1; border: 1.5px solid var(--bg2); border-radius: 10px; padding: 9px 8px; background: var(--bg2); color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer; }
+  .tool-btn.active { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg)); }
+  .filter-panel { display: none; padding: 0 0 12px; }
+  .filter-panel.open { display: block; }
+  .filter-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 9px; }
+  .filter-chip { border: 1.5px solid var(--bg2); border-radius: 18px; padding: 7px 10px; background: var(--bg2); color: var(--hint); font-size: 12px; cursor: pointer; }
+  .filter-chip.active { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg)); }
+  .filter-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .filter-select { width: 100%; border: 1.5px solid var(--bg2); border-radius: 10px; padding: 9px; background: var(--bg2); color: var(--text); font-size: 12px; outline: none; }
+  .filter-note { color: var(--hint); font-size: 10px; line-height: 1.35; margin-top: 8px; }
+
   /* Dishes */
   .dishes { padding: 12px 16px 100px; display: flex; flex-direction: column; gap: 12px; }
-  .dish-card { background: var(--bg2); border-radius: var(--radius); overflow: hidden; display: flex; cursor: pointer; transition: transform 0.1s; }
+  .dish-card { position: relative; background: var(--bg2); border: 2px solid transparent; border-radius: var(--radius); overflow: hidden; display: flex; cursor: pointer; transition: transform 0.1s, border-color 0.15s; }
+  .dish-card.compared { border-color: var(--accent); }
   .dish-card:active { transform: scale(0.98); }
   .dish-img { width: 90px; min-height: 90px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 40px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
   .dish-info { padding: 10px 12px; flex: 1; min-width: 0; }
@@ -40,6 +54,19 @@
   .dish-cal { font-size: 11px; color: var(--hint); }
   .add-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-text); border: none; font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
   .add-btn:active { transform: scale(0.9); }
+  .compare-mark { position: absolute; top: 7px; right: 7px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0,0,0,.08); background: var(--bg); color: var(--hint); cursor: pointer; font-size: 15px; z-index: 2; }
+  .compare-mark.active { background: var(--accent); color: var(--accent-text); }
+  .dish-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 5px; padding-right: 30px; }
+  .dish-tag { font-size: 9px; border-radius: 10px; padding: 2px 6px; background: color-mix(in srgb, var(--accent) 12%, var(--bg)); color: var(--accent); }
+  .empty-results { padding: 42px 20px; text-align: center; color: var(--hint); line-height: 1.5; }
+
+  /* Comparison table */
+  .compare-wrap { overflow-x: auto; margin-top: 12px; }
+  .compare-table { width: 100%; min-width: 440px; border-collapse: collapse; font-size: 12px; }
+  .compare-table th, .compare-table td { border-bottom: 1px solid var(--bg2); padding: 9px 7px; text-align: center; }
+  .compare-table th:first-child, .compare-table td:first-child { position: sticky; left: 0; background: var(--bg); text-align: left; font-weight: 600; }
+  .compare-table th { color: var(--text); font-size: 11px; }
+  .compare-subtitle { color: var(--hint); font-size: 12px; line-height: 1.4; }
 
   /* Modal */
   .overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
@@ -98,6 +125,12 @@
   .pay-btn.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--bg)); }
   .pay-btn-icon { font-size: 22px; }
   .pay-btn-label { font-size: 12px; font-weight: 600; margin-top: 4px; color: var(--text); }
+  .fulfillment-toggle { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .fulfillment-toggle .pay-btn { padding: 8px 4px; }
+  .fulfillment-toggle .pay-btn-icon { font-size: 19px; }
+  .fulfillment-toggle .pay-btn-label { font-size: 10px; }
+  .detail-input { width: 100%; margin-top: 8px; background: var(--bg2); border: 1.5px solid transparent; border-radius: 10px; padding: 10px 12px; font-size: 14px; color: var(--text); outline: none; }
+  .detail-input:focus { border-color: var(--accent); }
 
   /* Bonus row */
   .bonus-row { display: flex; align-items: center; gap: 10px; background: var(--bg2); border-radius: 10px; padding: 10px 12px; }
@@ -135,6 +168,26 @@
 <div class="header">
   <div class="header-title"><span>🌿</span><span>Bloom Balance</span></div>
   <div class="cats" id="cats"></div>
+  <div class="tools">
+    <button class="tool-btn" id="filter-btn" onclick="toggleFilterPanel()">🎛 Фильтры <span id="filter-count"></span></button>
+    <button class="tool-btn" id="compare-btn" onclick="openCompare()">⚖️ Сравнить <span id="compare-count"></span></button>
+  </div>
+  <div class="filter-panel" id="filter-panel">
+    <div class="filter-chips">
+      <button class="filter-chip" data-filter="gluten_free" onclick="toggleDietFilter('gluten_free')">Без глютена</button>
+      <button class="filter-chip" data-filter="lactose_free" onclick="toggleDietFilter('lactose_free')">Без лактозы</button>
+      <button class="filter-chip" data-filter="vegan" onclick="toggleDietFilter('vegan')">Веган</button>
+    </div>
+    <div class="filter-selects">
+      <select class="filter-select" id="cal-filter" onchange="setNumericFilter('cal',this.value)">
+        <option value="0">Любая калорийность</option><option value="200">До 200 ккал</option><option value="350">До 350 ккал</option><option value="500">До 500 ккал</option>
+      </select>
+      <select class="filter-select" id="price-filter" onchange="setNumericFilter('price',this.value)">
+        <option value="0">Любая цена</option><option value="350">До 350 ₽</option><option value="500">До 500 ₽</option><option value="700">До 700 ₽</option>
+      </select>
+    </div>
+    <div class="filter-note">Фильтры показывают объективные характеристики состава. Гость самостоятельно решает, какие блюда ему подходят.</div>
+  </div>
 </div>
 <div class="dishes" id="dishes"></div>
 
@@ -149,6 +202,20 @@
     <div class="variant-label">Выберите вариант</div>
     <div class="variants" id="modal-variants"></div>
     <button class="modal-add-btn" id="modal-add-btn" onclick="addFromModal()">Добавить в корзину</button>
+  </div>
+</div>
+
+<!-- Comparison modal -->
+<div class="overlay" id="compare-overlay" onclick="closeCompareBg(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-name">⚖️ Сравнение блюд</div>
+        <div class="compare-subtitle">КБЖУ указаны для варианта «Баланс»</div>
+      </div>
+      <button class="modal-close" onclick="closeCompare()">✕</button>
+    </div>
+    <div class="compare-wrap" id="compare-content"></div>
   </div>
 </div>
 
@@ -183,6 +250,16 @@ const CATS = [
 ];
 const EMOJI = {1:"🥣",2:"🥑",3:"🥜",4:"🎃",5:"🍜",6:"🍗",7:"🐟",8:"🥙",9:"🥗",10:"🥗",11:"🍮",12:"🍫",13:"🍵",14:"🥤"};
 const VN = {light:"🥗 Лёгкий",balance:"⚖️ Баланс",protein:"💪 Протеин+"};
+const DIET_LABELS = {gluten_free:"Без глютена",lactose_free:"Без лактозы",vegan:"Веган"};
+const DIET_TAGS = {
+  1:["lactose_free"], 2:["lactose_free"], 3:[],
+  4:["gluten_free","lactose_free","vegan"], 5:["gluten_free","lactose_free"],
+  6:["gluten_free","lactose_free"], 7:["gluten_free","lactose_free"],
+  8:["gluten_free","lactose_free","vegan"], 9:["gluten_free","lactose_free","vegan"],
+  10:[], 11:["gluten_free","lactose_free","vegan"],
+  12:["gluten_free","lactose_free","vegan"], 13:["gluten_free","lactose_free","vegan"],
+  14:["gluten_free","lactose_free","vegan"]
+};
 const DISHES = [
   {id:1,cat:1,name:"Овсянка с ягодами",desc:"Овсяная каша на растительном молоке с ягодами и мёдом.",v:{light:{cal:210,p:6,f:4,c:38,w:300,price:290},balance:{cal:310,p:9,f:7,c:52,w:350,price:320},protein:{cal:380,p:18,f:8,c:50,w:380,price:360}}},
   {id:2,cat:1,name:"Авокадо-тост",desc:"Цельнозерновой тост с авокадо, яйцом пашот, микрозеленью.",v:{light:{cal:280,p:10,f:14,c:28,w:200,price:380},balance:{cal:360,p:14,f:18,c:32,w:240,price:420},protein:{cal:430,p:24,f:20,c:30,w:270,price:470}}},
@@ -208,6 +285,14 @@ let modalVariant = "balance";
 let payMethod = "cash"; // cash | online
 let useBonus = false;
 let bonusBalance = 0;
+let activeDietFilters = new Set();
+let maxCalories = 0;
+let maxPrice = 0;
+let compareIds = [];
+let fulfillmentMethod = "pickup"; // dine_in | pickup | delivery
+let deliveryAddress = "";
+let tableNumber = "";
+let orderComment = "";
 
 // Получаем баланс бонусов из initData (если доступен)
 try {
@@ -228,13 +313,31 @@ function renderCats() {
 function switchCat(id) { activeCat=id; renderCats(); renderDishes(); }
 
 // ── Dishes ────────────────────────────────────────────────────────
+function filteredDishes() {
+  return DISHES.filter(d => {
+    if(d.cat !== activeCat) return false;
+    const tags = DIET_TAGS[d.id] || [];
+    if([...activeDietFilters].some(tag => !tags.includes(tag))) return false;
+    if(maxCalories && d.v.balance.cal > maxCalories) return false;
+    if(maxPrice && d.v.balance.price > maxPrice) return false;
+    return true;
+  });
+}
+
 function renderDishes() {
-  document.getElementById("dishes").innerHTML = DISHES.filter(d=>d.cat===activeCat).map(d=>`
-    <div class="dish-card" onclick="openModal(${d.id})">
+  const shown = filteredDishes();
+  if(!shown.length) {
+    document.getElementById("dishes").innerHTML = `<div class="empty-results">🔎 По выбранным фильтрам блюд в этой категории нет.<br>Измените фильтры или откройте другую категорию.</div>`;
+    return;
+  }
+  document.getElementById("dishes").innerHTML = shown.map(d=>`
+    <div class="dish-card${compareIds.includes(d.id)?" compared":""}" onclick="openModal(${d.id})">
+      <button class="compare-mark${compareIds.includes(d.id)?" active":""}" onclick="toggleCompare(event,${d.id})">⚖️</button>
       <div class="dish-img">${EMOJI[d.id]||"🍽️"}</div>
       <div class="dish-info">
         <div class="dish-name">${d.name}</div>
         <div class="dish-desc">${d.desc}</div>
+        <div class="dish-tags">${(DIET_TAGS[d.id]||[]).map(t=>`<span class="dish-tag">${DIET_LABELS[t]}</span>`).join("")}</div>
         <div class="dish-meta">
           <div><div class="dish-price">от ${d.v.balance.price} ₽</div><div class="dish-cal">${d.v.balance.cal} ккал</div></div>
           <button class="add-btn" onclick="quickAdd(event,${d.id})">+</button>
@@ -242,6 +345,57 @@ function renderDishes() {
       </div>
     </div>`).join("");
 }
+
+function toggleFilterPanel() {
+  document.getElementById("filter-panel").classList.toggle("open");
+  document.getElementById("filter-btn").classList.toggle("active");
+}
+function toggleDietFilter(tag) {
+  if(activeDietFilters.has(tag)) activeDietFilters.delete(tag); else activeDietFilters.add(tag);
+  document.querySelector(`[data-filter="${tag}"]`).classList.toggle("active", activeDietFilters.has(tag));
+  updateFilterCount(); renderDishes();
+}
+function setNumericFilter(type, value) {
+  if(type === "cal") maxCalories = Number(value) || 0;
+  if(type === "price") maxPrice = Number(value) || 0;
+  updateFilterCount(); renderDishes();
+}
+function updateFilterCount() {
+  const count = activeDietFilters.size + (maxCalories?1:0) + (maxPrice?1:0);
+  document.getElementById("filter-count").textContent = count ? `(${count})` : "";
+}
+
+function toggleCompare(e, id) {
+  e.stopPropagation();
+  const index = compareIds.indexOf(id);
+  if(index >= 0) compareIds.splice(index, 1);
+  else if(compareIds.length < 3) compareIds.push(id);
+  else {
+    showNotice("Можно сравнить не больше трёх блюд.");
+    return;
+  }
+  document.getElementById("compare-count").textContent = compareIds.length ? `(${compareIds.length})` : "";
+  document.getElementById("compare-btn").classList.toggle("active", compareIds.length >= 2);
+  renderDishes();
+}
+function openCompare() {
+  if(compareIds.length < 2) { showNotice("Выберите минимум два блюда кнопкой ⚖️ на карточках."); return; }
+  const dishes = compareIds.map(id=>DISHES.find(d=>d.id===id)).filter(Boolean);
+  const rows = [
+    ["Цена", d=>`${d.v.balance.price} ₽`], ["Калории", d=>`${d.v.balance.cal} ккал`],
+    ["Белки", d=>`${d.v.balance.p} г`], ["Жиры", d=>`${d.v.balance.f} г`],
+    ["Углеводы", d=>`${d.v.balance.c} г`], ["Вес", d=>`${d.v.balance.w} г`]
+  ];
+  document.getElementById("compare-content").innerHTML = `<table class="compare-table">
+    <thead><tr><th>Показатель</th>${dishes.map(d=>`<th>${EMOJI[d.id]} ${d.name}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(([label,get])=>`<tr><td>${label}</td>${dishes.map(d=>`<td>${get(d)}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table>`;
+  document.getElementById("compare-overlay").classList.add("open");
+}
+function closeCompare() { document.getElementById("compare-overlay").classList.remove("open"); }
+function closeCompareBg(e) { if(e.target.id === "compare-overlay") closeCompare(); }
+function showNotice(text) { if(tg?.showAlert) tg.showAlert(text); else alert(text); }
+function esc(value) { return String(value || "").replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch])); }
 
 function quickAdd(e, id) {
   e.stopPropagation();
@@ -352,10 +506,32 @@ function renderCartSheet() {
       </div>
     </div>` : "";
 
+  const fulfillmentDetails = fulfillmentMethod === "delivery" ? `
+      <input class="detail-input" maxlength="300" placeholder="Введите адрес доставки" value="${esc(deliveryAddress)}" oninput="deliveryAddress=this.value">` :
+    fulfillmentMethod === "dine_in" ? `
+      <input class="detail-input" maxlength="20" placeholder="Номер столика" value="${esc(tableNumber)}" oninput="tableNumber=this.value">` : "";
+
+  const fulfillmentSection = `
+    <div class="section">
+      <div class="section-title">📦 Как получить заказ</div>
+      <div class="fulfillment-toggle">
+        <div class="pay-btn${fulfillmentMethod==="dine_in"?" active":""}" onclick="setFulfillment('dine_in')">
+          <div class="pay-btn-icon">🍽️</div><div class="pay-btn-label">В заведении</div>
+        </div>
+        <div class="pay-btn${fulfillmentMethod==="pickup"?" active":""}" onclick="setFulfillment('pickup')">
+          <div class="pay-btn-icon">🥡</div><div class="pay-btn-label">Самовывоз</div>
+        </div>
+        <div class="pay-btn${fulfillmentMethod==="delivery"?" active":""}" onclick="setFulfillment('delivery')">
+          <div class="pay-btn-icon">🚚</div><div class="pay-btn-label">Доставка</div>
+        </div>
+      </div>
+      ${fulfillmentDetails}
+    </div>`;
+
   const commentSection = `
     <div class="section">
       <div class="section-title">💬 Комментарий</div>
-      <textarea class="comment-input" id="comment-input" rows="2" placeholder="Без лука, аллергия на орехи…"></textarea>
+      <textarea class="comment-input" id="comment-input" rows="2" maxlength="500" placeholder="Например: без лука" oninput="orderComment=this.value">${esc(orderComment)}</textarea>
     </div>`;
 
   const paySection = `
@@ -380,7 +556,7 @@ function renderCartSheet() {
       <div class="total-row main"><span>Итого</span><span class="val">${cartTotal()} ₽</span></div>
     </div>`;
 
-  footer.innerHTML = bonusSection + commentSection + paySection + totalsSection +
+  footer.innerHTML = bonusSection + fulfillmentSection + commentSection + paySection + totalsSection +
     `<button class="order-btn" onclick="sendOrder()">
       ${payMethod==="online" ? "🧪 Показать демо-оплату" : "✅ Оформить заказ"}
     </button>`;
@@ -392,10 +568,18 @@ function toggleBonus() {
   renderCartSheet();
 }
 function setPayMethod(m) { payMethod=m; renderCartSheet(); }
+function setFulfillment(m) { fulfillmentMethod=m; renderCartSheet(); }
 
 // ── Send order ────────────────────────────────────────────────────
 function sendOrder() {
   if(!cart.length) return;
+
+  if(fulfillmentMethod === "delivery" && deliveryAddress.trim().length < 5) {
+    showNotice("Укажите адрес доставки."); return;
+  }
+  if(fulfillmentMethod === "dine_in" && !tableNumber.trim()) {
+    showNotice("Укажите номер столика."); return;
+  }
 
   const webapp = window.Telegram?.WebApp;
   if(!webapp || typeof webapp.sendData !== "function") {
@@ -403,7 +587,6 @@ function sendOrder() {
     return;
   }
 
-  const comment = (document.getElementById("comment-input")?.value || "").trim();
   const payload = JSON.stringify({
     source: "mini_app",
     items: cart,
@@ -411,7 +594,10 @@ function sendOrder() {
     use_bonus: useBonus,
     bonus_amount: useBonus ? bonusDiscount() : 0,
     payment_method: payMethod,
-    comment: comment || null,
+    fulfillment_method: fulfillmentMethod,
+    delivery_address: fulfillmentMethod === "delivery" ? deliveryAddress.trim() : null,
+    table_number: fulfillmentMethod === "dine_in" ? tableNumber.trim() : null,
+    comment: orderComment.trim() || null,
   });
 
   try { webapp.sendData(payload); }
